@@ -11,7 +11,7 @@ const authRoutes = require("./middleware/auth");
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:5173", "http://localhost:3000"],
   credentials: true
 }));
 
@@ -24,17 +24,21 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: false,
-    maxAge: 1000 * 60 * 60 * 24
+    secure: false, 
+    maxAge: 1000 * 60 * 60 * 24 
   }
 }));
-
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.error(err));
 
-
 app.use("/", authRoutes);
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+app.get("/", (req, res) => {
+  res.send("API is running");
+});
+
+app.listen(5000, () => {
+  console.log("Server running on port 5000");
+});

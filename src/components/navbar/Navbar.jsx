@@ -1,9 +1,27 @@
 import React from 'react'
 import './Navbar.css'
 import logo from "../../assets/logo.png"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:5000/logout", {}, {
+        withCredentials: true
+      });
+
+      localStorage.removeItem("user"); // remove stored user
+      navigate("/login");
+
+    } catch (err) {
+      console.error(err);
+      alert("Logout failed");
+    }
+  };
+
   return (
     <div className="Navbar">
       <div className='navbar-left'>
@@ -24,6 +42,10 @@ const Navbar = () => {
             <li>Sign Up</li>
           </Link>
 
+          {/* ✅ Logout button */}
+          <li onClick={handleLogout} style={{ cursor: "pointer" }}>
+            Logout
+          </li>
         </div>
       </div>
     </div>

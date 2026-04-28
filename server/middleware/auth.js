@@ -4,23 +4,18 @@ const User = require("../models/User");
 
 const router = express.Router();
 
-/* =========================
-   SIGNUP
-========================= */
+// SIGNUP
 router.post("/signup", async (req, res) => {
   try {
     const { email, username, password } = req.body;
 
-    // check existing user
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: "Email already exists" });
     }
 
-    // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // auto increment user_id
     const lastUser = await User.findOne().sort({ user_id: -1 });
 
     const newUser = new User({
@@ -32,7 +27,6 @@ router.post("/signup", async (req, res) => {
 
     await newUser.save();
 
-    // ✅ set session BEFORE response
     req.session.user = {
       id: newUser.user_id,
       email: newUser.email,
@@ -50,10 +44,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-
-/* =========================
-   LOGIN
-========================= */
+// LOGIN
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -70,7 +61,6 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Incorrect password" });
     }
 
-    // ✅ store ONLY safe user data in session
     req.session.user = {
       id: user.user_id,
       email: user.email,
@@ -89,9 +79,6 @@ router.post("/login", async (req, res) => {
 });
 
 
-/* =========================
-   GET CURRENT USER
-========================= */
 router.get("/me", (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ error: "Unauthorized" });
@@ -101,9 +88,7 @@ router.get("/me", (req, res) => {
 });
 
 
-/* =========================
-   LOGOUT (optional but useful)
-========================= */
+// LOGOUT
 router.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
