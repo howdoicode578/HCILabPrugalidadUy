@@ -9,6 +9,21 @@
     top: 0;
 }
 
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:visited {
+    color: white;
+}
+
+a:hover {
+    color: #3b82f6
+}
+a:active {
+    color: white;
+}
 .navbar-left {
     display: flex;
     align-items: center;
@@ -35,6 +50,15 @@
 .navbar-left li:hover, ul li:hover {
     color: #3b82f6 !important;
     transform: translateY(-5px) !important;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: right;
+    gap: 150px; 
+    color: white;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri;
+    font-size: 24px;
 }
 
 ul {
