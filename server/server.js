@@ -30,7 +30,7 @@ app.use(session({
 }));
 
 
-mongoose.connect('mongodb+srv://AzraPrugalidad:HCILAB1234@cluster0.bcgnwkz.mongodb.net/users?appName=Cluster0')
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.error(err));
 
