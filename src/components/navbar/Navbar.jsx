@@ -5,6 +5,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 const Navbar = () => {
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -42,13 +45,22 @@ const Navbar = () => {
             <li>Sign Up</li>
           </Link>
 
-          {/* ✅ Logout button */}
-          <li onClick={handleLogout} style={{ cursor: "pointer" }}>
-            Logout
-          </li>
+        <div>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <span>Hi, {user.username}</span>
+
+              <button onClick={handleLogout}>
+                Log Out
+              </button>
+            </div>
+          ) : (
+            <Link to="/login">Log In</Link>
+          )}
+        </div>
+                  </div>
         </div>
       </div>
-    </div>
   )
 }
 

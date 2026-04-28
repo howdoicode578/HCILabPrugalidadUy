@@ -1,5 +1,7 @@
 require("dotenv").config();
 
+const PORT = process.env.port || 5000;
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -39,6 +41,6 @@ app.get("/", (req, res) => {
   res.send("API is running");
 });
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
