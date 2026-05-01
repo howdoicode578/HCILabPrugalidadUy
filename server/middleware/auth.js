@@ -4,7 +4,8 @@ const User = require("../models/User");
 
 const router = express.Router();
 
-// SIGNUP
+
+// SIGNUP 
 router.post("/signup", async (req, res) => {
   try {
     const { email, username, password } = req.body;
@@ -22,7 +23,8 @@ router.post("/signup", async (req, res) => {
       user_id: lastUser ? lastUser.user_id + 1 : 1,
       email,
       username,
-      password: hashedPassword
+      password: hashedPassword,
+      admin: false
     });
 
     await newUser.save();
@@ -30,7 +32,8 @@ router.post("/signup", async (req, res) => {
     req.session.user = {
       id: newUser.user_id,
       email: newUser.email,
-      username: newUser.username
+      username: newUser.username,
+      admin: newUser.admin
     };
 
     return res.json({
@@ -43,6 +46,7 @@ router.post("/signup", async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 });
+
 
 // LOGIN
 router.post("/login", async (req, res) => {
@@ -64,7 +68,8 @@ router.post("/login", async (req, res) => {
     req.session.user = {
       id: user.user_id,
       email: user.email,
-      username: user.username
+      username: user.username,
+      admin: user.admin
     };
 
     return res.json({
@@ -88,7 +93,6 @@ router.get("/me", (req, res) => {
 });
 
 
-// LOGOUT
 router.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -99,5 +103,14 @@ router.post("/logout", (req, res) => {
     return res.json({ message: "Logged out successfully" });
   });
 });
+
+
+const requireAdmin = (req, res, next) => {
+  if (!req.session.user || !req.session.user.admin) {
+    return res.status(403).json({ error: "Forbidden: Admins only" });
+  }
+  next();
+};
+
 
 module.exports = router;

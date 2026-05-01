@@ -1,14 +1,16 @@
-require("dotenv").config();
-
-const PORT = process.env.port || 5000;
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
+require("dotenv").config();
+
+const PORT = process.env.PORT || 5000;
+
 const authRoutes = require("./middleware/auth");
+const itemRoutes = require("./routes/items"); 
+const orderRoutes = require("./routes/orders");
 
 const app = express();
 
@@ -26,8 +28,8 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: false, 
-    maxAge: 1000 * 60 * 60 * 24 
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 24
   }
 }));
 
@@ -36,6 +38,9 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.error(err));
 
 app.use("/", authRoutes);
+app.use("/", itemRoutes);
+app.use("/", orderRoutes);
+app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
   res.send("API is running");

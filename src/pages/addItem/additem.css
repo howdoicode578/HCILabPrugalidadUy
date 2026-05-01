@@ -1,0 +1,116 @@
+.add-item-page {
+    background-color: #fffbeb; /* Light cream background */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
+}
+
+.form-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(185, 28, 28, 0.1);
+    width: 100%;
+    max-width: 500px;
+    border-top: 8px solid #b91c1c; /* Themed Red top bar */
+}
+
+.add-item-form h2 {
+    text-align: center;
+    color: #b91c1c;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.header-underline {
+    width: 60px;
+    height: 4px;
+    background-color: #facc15; /* Themed Yellow */
+    margin: 0 auto 30px;
+    border-radius: 2px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+.input-group input[type="text"],
+.input-group input[type="number"] {
+    padding: 12px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #facc15;
+}
+
+/* Hide the ugly default file input */
+#file-upload {
+    display: none;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #f3f4f6;
+    border: 2px dashed #b91c1c;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    color: #b91c1c;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.custom-file-upload:hover {
+    background: #fff1f2;
+    border-color: #facc15;
+}
+
+.image-preview {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.image-preview img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 3px solid #facc15;
+}
+
+.submit-btn {
+    width: 100%;
+    background-color: #b91c1c;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #991b1b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(185, 28, 28, 0.3);
+}

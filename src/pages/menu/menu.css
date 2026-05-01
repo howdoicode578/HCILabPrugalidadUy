@@ -1,0 +1,130 @@
+.menu-page {
+  background-color: #fffbeb;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
+}
+
+.menu-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.menu-header h2 {
+  font-size: 42px;
+  color: #b91c1c;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.header-underline {
+  width: 80px;
+  height: 5px;
+  background-color: #facc15; 
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.menu-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.menu-item-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.menu-card {
+    background: #ffffff;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+    height: 100%;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.menu-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(185, 28, 28, 0.2);
+  border-color: #facc15;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3; 
+    overflow: hidden;
+    background-color: #f3f4f6;
+}
+
+.menu-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    object-position: center;
+    display: block;
+}
+
+.menu-item-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+}
+
+
+.menu-card:hover img {
+  transform: scale(1.1);
+}
+
+.price-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #facc15;
+  color: #000;
+  padding: 5px 15px;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.menu-card h3 {
+    font-size: 22px;
+    margin: 20px 15px 5px;
+    color: #b91c1c;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.view-btn {
+    background-color: #b91c1c;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    margin: auto 20px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.view-btn:hover {
+  background-color: #991b1b;
+}
+
+@media (max-width: 600px) {
+  .menu-header h2 { font-size: 32px; }
+  .menu-container { grid-template-columns: 1fr; }
+}

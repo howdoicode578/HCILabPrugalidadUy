@@ -1,67 +1,71 @@
-import React from 'react'
-import './Navbar.css'
-import logo from "../../assets/logo.png"
+import React, { useEffect, useState } from 'react';
+import './Navbar.css';
+import logo from "../../assets/logo.png";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 const Navbar = () => {
+  const [user, setUser] = useState(null);
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  
+  useEffect(() => {
+    axios.get("http://localhost:5000/me", { withCredentials: true })
+      .then(res => {
+        setUser(res.data);
+        localStorage.setItem("user", JSON.stringify(res.data)); 
+      })
+      .catch(() => setUser(null));
+  }, []);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:5000/logout", {}, {
-        withCredentials: true
-      });
-
-      localStorage.removeItem("user"); // remove stored user
-      navigate("/login");
-
+      await axios.post("http://localhost:5000/logout", {}, { withCredentials: true });
     } catch (err) {
-      console.error(err);
-      alert("Logout failed");
+      console.error("Logout request failed", err);
+    } finally {
+      localStorage.removeItem("user");
+      navigate("/login");
     }
   };
 
   return (
-    <div className="Navbar">
-      <div className='navbar-left'>
-        <img src={logo} alt="" className="logo" />
+    <nav className="Navbar">
+      <div className="navbar-left">
+        <Link to="/">
+          <img src={logo} alt="Company Logo" className="navbar-logo" />
+        </Link>
 
-        <ul className='hidden xl:flex items-center list-none gap-[120px]'>
-          <li>Home</li>
-          <li>Order Menu</li>
-          <li>Other Options</li>
-        </ul>
-
-        <div className='navbar-right'>
-          <Link to="/login">
-            <li>Login</li>
-          </Link>
-
-          <Link to="/signup">
-            <li>Sign Up</li>
-          </Link>
-
-        <div>
-          {user ? (
-            <div className="flex items-center gap-3">
-              <span>Hi, {user.username}</span>
-
-              <button onClick={handleLogout}>
-                Log Out
-              </button>
-            </div>
-          ) : (
-            <Link to="/login">Log In</Link>
+        <ul className="nav-links">
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/menu">Order Menu</Link></li>
+          {user?.admin && (
+            <li><Link to="/add-item">Add Item</Link></li>
           )}
-        </div>
-                  </div>
-        </div>
+        </ul>
       </div>
-  )
-}
+
+      <div className="navbar-right">
+        <ul className="nav-links">
+          {!user ? (
+            <>
+              <li><Link to="/login" className="login-link">Log In</Link></li>
+              <li><Link to="/signup" className="signup-btn">Sign Up</Link></li>
+            </>
+          ) : (
+            <>
+              <li className="user-greeting">Hi, {user.username}</li>
+              <li><Link to="/cart">Cart</Link></li>
+              <li>
+                <button className="logout-btn" onClick={handleLogout}>
+                  Log Out
+                </button>
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
+    </nav>
+  );
+};
 
 export default Navbar;
