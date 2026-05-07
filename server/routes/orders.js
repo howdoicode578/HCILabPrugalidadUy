@@ -28,9 +28,18 @@ router.post("/order", async (req, res) => {
   }
 });
 
-router.get("/orders/:userId", async (req, res) => {
+router.get("/:userId", async (req, res) => {
   try {
     const orders = await Order.find({ userId: req.params.userId });
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const orders = await Order.find();
     res.json(orders);
   } catch (err) {
     res.status(500).json({ error: err.message });

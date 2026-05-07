@@ -12,7 +12,7 @@ const ItemPage = () => {
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/item/${id}`)
+    axios.get(`http://localhost:5000/items/${id}`)
       .then(res => setItem(res.data))
       .catch(err => console.error(err));
   }, [id]);

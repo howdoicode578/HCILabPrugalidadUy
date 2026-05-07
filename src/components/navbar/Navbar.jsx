@@ -36,12 +36,16 @@ const Navbar = () => {
         </Link>
 
         <ul className="nav-links">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/menu">Order Menu</Link></li>
-          {user?.admin && (
-            <li><Link to="/add-item">Add Item</Link></li>
-          )}
-        </ul>
+  <li><Link to="/">Home</Link></li>
+  <li><Link to="/menu">Order Menu</Link></li>
+
+  {user?.admin && (
+    <>
+      <li><Link to="/admin">Admin Dashboard</Link></li>
+      <li><Link to="/add-item">Add Item</Link></li>
+    </>
+  )}
+</ul>
       </div>
 
       <div className="navbar-right">

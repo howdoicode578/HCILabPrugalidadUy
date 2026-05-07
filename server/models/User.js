@@ -1,4 +1,7 @@
-const mongoose = require("mongoose");
+﻿const mongoose = require("mongoose");
+
+// 🔍 DEBUG LINE (temporary)
+console.log("User model loaded");
 
 const userSchema = new mongoose.Schema({
   user_id: {
@@ -21,11 +24,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  
+
   admin: {
     type: Boolean,
     default: false
   }
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports =
+  mongoose.models.User || mongoose.model("User", userSchema);
