@@ -134,7 +134,8 @@ router.put(
       item.description =
         req.body.description || item.description;
 
-      // if new image uploaded
+      // new image uploaded, stores filename in database
+      // actual image is stored in folder on server handled by multer
       if (req.file) {
         item.image = req.file.filename;
       }

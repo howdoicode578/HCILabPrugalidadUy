@@ -9,6 +9,7 @@ const AddItem = () => {
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
 
+    // Handles file selection and generates preview of image
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
         setFile(selectedFile);
@@ -31,6 +32,7 @@ const AddItem = () => {
         formData.append("image", file);
 
         try {
+            // Sends post request from frontend to backend with form data including image file
             await axios.post("http://localhost:5000/add-item", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });

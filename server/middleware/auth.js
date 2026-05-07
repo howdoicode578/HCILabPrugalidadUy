@@ -4,9 +4,7 @@ const User = require("../models/user");
 
 const router = express.Router();
 
-// ===============================
 // SIGNUP
-// ===============================
 router.post("/signup", async (req, res) => {
   try {
     const { email, username, password } = req.body;
@@ -49,14 +47,12 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// ===============================
 // LOGIN
-// ===============================
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    console.log("LOGIN BODY:", req.body); // DEBUG
+    console.log("LOGIN BODY:", req.body); // DEBUG IN CONSOLE
 
     if (!email || !password) {
       return res.status(400).json({ error: "Missing email or password" });
@@ -75,7 +71,7 @@ router.post("/login", async (req, res) => {
     }
 
     req.session.user = {
-      _id: user._id, // ✅ FIXED (was user.user_id)
+      _id: user._id,
       email: user.email,
       username: user.username,
       admin: user.admin
@@ -92,9 +88,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// ===============================
-// GET CURRENT USER
-// ===============================
+// CHECK IF LOGGED IN
 router.get("/me", (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ error: "Unauthorized" });
@@ -103,9 +97,7 @@ router.get("/me", (req, res) => {
   res.json(req.session.user);
 });
 
-// ===============================
 // LOGOUT
-// ===============================
 router.post("/logout", (req, res) => {
   req.session.destroy(() => {
     res.clearCookie("connect.sid");

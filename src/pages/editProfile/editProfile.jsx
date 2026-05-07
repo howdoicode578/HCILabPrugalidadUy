@@ -9,7 +9,7 @@ const EditProfile = () => {
     username: "",
     email: "",
     currentPassword: "",
-    newPassword: "" // Matched the key used in handleSave
+    newPassword: "" 
   });
 
   useEffect(() => {

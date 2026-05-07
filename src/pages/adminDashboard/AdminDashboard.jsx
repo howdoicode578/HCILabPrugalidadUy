@@ -9,7 +9,7 @@ const AdminDashboard = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [editData, setEditData] = useState({});
 
-  // FETCH USERS + ORDERS
+  // Fetch users and orders
   useEffect(() => {
     fetch("http://localhost:5000/users")
       .then((res) => res.json())
@@ -22,9 +22,10 @@ const AdminDashboard = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  // UPDATE USER
+  // Updates user
   const handleUpdate = async (id) => {
     try {
+      // Makes copy of editData to modify before sending to backend
       const payload = { ...editData };
 
       if (!payload.password || payload.password.trim() === "") {
@@ -49,7 +50,7 @@ const AdminDashboard = () => {
     }
   };
 
-  // MARK ORDER AS DONE (DELETE)
+  // Marks order as done / Deletes order from database
   const handleDeleteOrder = async (orderId) => {
     try {
       await fetch(`http://localhost:5000/orders/${orderId}`, {

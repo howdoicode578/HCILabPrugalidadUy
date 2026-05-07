@@ -36,7 +36,7 @@ const ItemPage = () => {
       <div className="item-detail-page">
         <div className="item-detail-container">
           
-          {/* Left Side: Image Gallery Style */}
+          {/* Left Side: Image Preview */}
           <div className="item-image-section">
             <button className="back-btn" onClick={() => navigate(-1)}>← Back</button>
             <div className="main-image-wrapper">
@@ -47,7 +47,7 @@ const ItemPage = () => {
             </div>
           </div>
 
-          {/* Right Side: Product Info */}
+          {/* Right Side: Product Info and Order Controls*/}
           <div className="item-info-section">
             <span className="category-tag">Chef's Choice</span>
             <h1>{item.name}</h1>
