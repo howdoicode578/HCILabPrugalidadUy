@@ -154,6 +154,17 @@
   cursor: pointer;
 }
 
+.delete-btn {
+  flex: 1;
+  background: #f72e2e;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .cancel-btn {
   flex: 1;
   background: #6b7280;

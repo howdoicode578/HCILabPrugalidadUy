@@ -73,6 +73,32 @@ const EditItems = () => {
     }
   };
 
+  const handleDelete = async () => {
+  try {
+
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+
+    if (!confirmDelete) return;
+
+    await axios.delete(
+      `http://localhost:5000/item/${editingItem._id}`
+    );
+
+    alert("Item deleted successfully!");
+
+    setEditingItem(null);
+
+    fetchItems();
+
+  } catch (err) {
+    console.log(err);
+
+    alert("Delete failed");
+  }
+};
+
   if (!user || !user.admin) {
     return (
       <div className="admin-page">
@@ -169,21 +195,30 @@ const EditItems = () => {
                 />
               )}
 
-              <div className="modal-actions">
+                <div className="modal-actions">
+
                 <button
-                  className="save-btn"
-                  onClick={handleUpdate}
+                    className="save-btn"
+                    onClick={handleUpdate}
                 >
-                  Save Changes
+                    Save Changes
                 </button>
 
                 <button
-                  className="cancel-btn"
-                  onClick={() => setEditingItem(null)}
+                    className="delete-btn"
+                    onClick={handleDelete}
                 >
-                  Cancel
+                    Delete Item
                 </button>
-              </div>
+
+                <button
+                    className="cancel-btn"
+                    onClick={() => setEditingItem(null)}
+                >
+                    Cancel
+                </button>
+
+                </div>
 
             </div>
           </div>

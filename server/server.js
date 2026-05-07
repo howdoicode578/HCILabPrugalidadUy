@@ -4,26 +4,25 @@ const cors = require("cors");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
+const bcrypt = require("bcrypt");
 
 const PORT = process.env.PORT || 5000;
 
-const authRoutes = require("./middleware/auth"); 
+const authRoutes = require("./middleware/auth");
 const itemRoutes = require("./routes/items");
 const orderRoutes = require("./routes/orders");
 const User = require("./models/user");
 
 const app = express();
 
-// ===============================
 // MIDDLEWARE
-// ===============================
 app.use(cors({
   origin: ["http://localhost:5173", "http://localhost:3000"],
   credentials: true
 }));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); 
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(session({
@@ -48,12 +47,10 @@ app.use("/", itemRoutes);
 app.use("/orders", orderRoutes);
 app.use("/uploads", express.static("uploads"));
 
-// ===============================
 app.get("/", (req, res) => {
   res.send("API is running");
 });
 
-// TEST ROUTES
 app.get("/test", (req, res) => {
   res.send("SERVER IS RUNNING CORRECT FILE");
 });
@@ -62,7 +59,7 @@ app.get("/orders-test", (req, res) => {
   res.send("ORDERS ROUTE IS WORKING");
 });
 
-// USERS (ADMIN)
+// USERS
 app.get("/users", async (req, res) => {
   try {
     const users = await User.find();
@@ -72,11 +69,10 @@ app.get("/users", async (req, res) => {
   }
 });
 
-const bcrypt = require("bcrypt"); 
-
+// UPDATE USER
 app.put("/users/:id", async (req, res) => {
   try {
-    const { username, email, currentPassword, newPassword } = req.body;
+    const { username, email, currentPassword, newPassword, admin } = req.body;
 
     const user = await User.findById(req.params.id);
 
@@ -84,37 +80,53 @@ app.put("/users/:id", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // CHECK CURRENT PASSWORD FIRST
-    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    const updateData = {};
 
-    if (!isMatch) {
-      return res.status(400).json({ error: "Current password is incorrect" });
-    }
+    // update username/email/admin if provided
+    if (username !== undefined) updateData.username = username;
+    if (email !== undefined) updateData.email = email;
+    if (admin !== undefined) updateData.admin = admin;
 
-    // UPDATE DATA
-    user.username = username;
-    user.email = email;
-
-    // ONLY HASH IF NEW PASSWORD EXISTS
+    // PASSWORD CHECK + UPDATE
     if (newPassword && newPassword.trim() !== "") {
-      user.password = await bcrypt.hash(newPassword, 10);
+
+      // require current password check
+      if (!currentPassword) {
+        return res.status(400).json({
+          error: "Current password is required"
+        });
+      }
+
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+      if (!isMatch) {
+        return res.status(400).json({
+          error: "Current password is incorrect"
+        });
+      }
+
+      updateData.password = await bcrypt.hash(newPassword, 10);
     }
 
-    await user.save();
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
 
     res.json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      admin: user.admin
+      _id: updatedUser._id,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      admin: updatedUser.admin
     });
 
   } catch (err) {
+    console.log("UPDATE USER ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// ===============================
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

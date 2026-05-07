@@ -127,7 +127,9 @@ const AdminDashboard = () => {
             <div className="card-content">
               {users
                 .filter((user) =>
-                  user.username.toLowerCase().includes(search.toLowerCase())
+                  (user.username || "")
+                    .toLowerCase()
+                    .includes(search.toLowerCase())
                 )
                 .map((user) => (
                   <div key={user._id} className="user-entry">

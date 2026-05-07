@@ -25,7 +25,7 @@ const Home = () => {
         <header className="hero-section">
           <div className="hero-content">
             <h1>Hot, Fresh & Delicious Food</h1>
-            <p>Satisy your cravings with our hand-crafted, mouth-watering local specials delivered straight to your table.</p>
+            <p>Hungry? We've got you covered. Try out our locally made, fresh dishes today!</p>
             <Link to="/menu" className="hero-btn">
               Explore Our Menu
             </Link>

@@ -1,29 +1,36 @@
-export const getCart = () => {
-  return JSON.parse(localStorage.getItem("cart")) || [];
-};
-
 export const addToCart = (item) => {
-  let cart = getCart();
 
-  const existing = cart.find(i => i.itemId === item.itemId);
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  if (existing) {
-    existing.quantity += 1;
+  const existingItemIndex = cart.findIndex(
+    (cartItem) => cartItem.itemId === item.itemId
+  );
+
+  if (existingItemIndex !== -1) {
+
+    cart[existingItemIndex].quantity += item.quantity;
+
   } else {
-    cart.push({ ...item, quantity: 1 });
+
+    cart.push(item);
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
 };
 
-export const removeFromCart = (itemId) => {
-  let cart = getCart();
-
-  cart = cart.filter(item => item.itemId !== itemId);
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
+export const getCart = () => {
+  return JSON.parse(localStorage.getItem("cart")) || [];
+};
 
 export const clearCart = () => {
   localStorage.removeItem("cart");
+};
+
+export const removeFromCart = (itemId) => {
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  cart = cart.filter((item) => item.itemId !== itemId);
+
+  localStorage.setItem("cart", JSON.stringify(cart));
 };
