@@ -7,14 +7,16 @@ import Send from './pages/send/Send'
 import Signup from './pages/signup/Signup'
 import Login from './pages/login/Login'
 import Menu from './pages/menu/menu'
+import EditProfile from './pages/editProfile/editProfile'
 
 import ItemPage from './pages/item/item'
 import Cart from './pages/cart/cart'
 import Orders from './pages/orders/orders'
 
-// KEEP THESE
+
 import AddItem from './pages/addItem/AddItem'
 import AdminDashboard from './pages/adminDashboard/AdminDashboard'
+import EditItems from './pages/editItems/EditItems'
 
 const App = () => {
   return (
@@ -25,13 +27,15 @@ const App = () => {
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route path='/menu' element={<Menu />} />
-        <Route path='/add-item' element={<AddItem />} />
         <Route path='/item/:id' element={<ItemPage />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/orders' element={<Orders />} />
+        <Route path='/editProfile' element={<EditProfile />} />
 
         {/* ADMIN PAGE */}
         <Route path='/admin' element={<AdminDashboard />} />
+        <Route path="/edit-items" element={<EditItems />} />
+        <Route path='/add-item' element={<AddItem />} />
       </Routes>
     </div>
   )

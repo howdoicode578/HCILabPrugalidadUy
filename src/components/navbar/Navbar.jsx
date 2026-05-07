@@ -43,6 +43,7 @@ const Navbar = () => {
     <>
       <li><Link to="/admin">Admin Dashboard</Link></li>
       <li><Link to="/add-item">Add Item</Link></li>
+      <li><Link to="/edit-items">Edit Items</Link></li>
     </>
   )}
 </ul>
@@ -57,7 +58,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <li className="user-greeting">Hi, {user.username}</li>
+              <li className="user-greeting"><Link to="/editProfile">Hi, {user.username}</Link></li>
               <li><Link to="/cart">Cart</Link></li>
               <li>
                 <button className="logout-btn" onClick={handleLogout}>

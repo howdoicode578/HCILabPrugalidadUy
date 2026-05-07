@@ -1,0 +1,240 @@
+.admin-page {
+  background-color: #fffbeb;
+  min-height: 100vh;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
+}
+
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px 40px 20px; 
+}
+
+.admin-header {
+  text-align: center;
+  color: #b91c1c;
+  margin-bottom: 20px; 
+  text-transform: uppercase;
+}
+
+.admin-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+}
+
+.header-underline {
+  width: 100px;
+  height: 4px;
+  background-color: #facc15;
+  margin: 0 auto;
+}
+
+
+.admin-search-bar {
+  width: 100%;
+  padding: 15px 25px;
+  margin: 20px 0 30px 0;
+  border-radius: 50px;
+  border: 2px solid #facc15;
+  outline: none;
+  font-size: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.dashboard-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.admin-card {
+  flex: 1; 
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  border: 1px solid #f0f0f0;
+  min-height: 500px;
+}
+
+.admin-card h2 {
+  color: #b91c1c;
+  font-size: 28px;
+  margin-bottom: 25px;
+  border-bottom: 4px solid #facc15;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.order-entry {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column; 
+  gap: 10px;
+  position: relative;
+}
+
+.order-items-list {
+  background: #fff9e6;
+  padding: 12px;
+  border-radius: 10px;
+  margin: 10px 0;
+  font-size: 15px;
+  color: #444;
+}
+
+.order-total-text {
+  font-weight: 800;
+  color: #b91c1c;
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+.done-btn {
+  align-self: flex-end; 
+  background-color: #16a34a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.done-btn:hover {
+  background-color: #15803d;
+}
+
+.user-entry {
+  padding: 15px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.view-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.u-name {
+  font-weight: bold;
+  font-size: 18px;
+  margin: 0;
+}
+
+.admin-tag {
+  background: #b91c1c;
+  color: white;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+.edit-btn {
+  background-color: #b91c1c;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-form {
+  background: #fff9e6; 
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px dashed #facc15; 
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.admin-input-small {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.admin-input-small:focus {
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.1);
+}
+
+.admin-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #444;
+  cursor: pointer;
+  padding: 5px 0;
+}
+
+.admin-checkbox input {
+  width: 18px;
+  height: 18px;
+  accent-color: #b91c1c;
+}
+
+.action-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.save-btn {
+  flex: 2;
+  background-color: #16a34a;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.save-btn:hover {
+  background-color: #15803d;
+}
+
+.cancel-btn {
+  flex: 1;
+  background-color: #6b7280;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cancel-btn:hover {
+  background-color: #4b5563;
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    flex-direction: column;
+  }
+}

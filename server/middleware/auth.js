@@ -1,26 +1,29 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const User = require("../models/User");
+const User = require("../models/user");
 
 const router = express.Router();
 
-
-// SIGNUP 
+// ===============================
+// SIGNUP
+// ===============================
 router.post("/signup", async (req, res) => {
   try {
     const { email, username, password } = req.body;
 
+    if (!email || !username || !password) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
     const existingUser = await User.findOne({ email });
+
     if (existingUser) {
       return res.status(400).json({ error: "Email already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const lastUser = await User.findOne().sort({ user_id: -1 });
-
     const newUser = new User({
-      user_id: lastUser ? lastUser.user_id + 1 : 1,
       email,
       username,
       password: hashedPassword,
@@ -30,28 +33,34 @@ router.post("/signup", async (req, res) => {
     await newUser.save();
 
     req.session.user = {
-      id: newUser.user_id,
+      _id: newUser._id,
       email: newUser.email,
       username: newUser.username,
       admin: newUser.admin
     };
 
-    return res.json({
+    res.json({
       message: "User created successfully",
       user: req.session.user
     });
 
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 
-
+// ===============================
 // LOGIN
+// ===============================
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    console.log("LOGIN BODY:", req.body); // DEBUG
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "Missing email or password" });
+    }
 
     const user = await User.findOne({ email });
 
@@ -66,51 +75,42 @@ router.post("/login", async (req, res) => {
     }
 
     req.session.user = {
-      id: user.user_id,
+      _id: user._id, // ✅ FIXED (was user.user_id)
       email: user.email,
       username: user.username,
       admin: user.admin
     };
 
-    return res.json({
+    res.json({
       message: "Login successful",
       user: req.session.user
     });
 
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-
+// ===============================
+// GET CURRENT USER
+// ===============================
 router.get("/me", (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  return res.json(req.session.user);
+  res.json(req.session.user);
 });
 
-
+// ===============================
+// LOGOUT
+// ===============================
 router.post("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ error: "Logout failed" });
-    }
-
+  req.session.destroy(() => {
     res.clearCookie("connect.sid");
-    return res.json({ message: "Logged out successfully" });
+    res.json({ message: "Logged out successfully" });
   });
 });
-
-
-const requireAdmin = (req, res, next) => {
-  if (!req.session.user || !req.session.user.admin) {
-    return res.status(403).json({ error: "Forbidden: Admins only" });
-  }
-  next();
-};
-
 
 module.exports = router;

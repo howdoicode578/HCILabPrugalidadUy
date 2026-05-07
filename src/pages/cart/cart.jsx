@@ -33,7 +33,7 @@ const Cart = () => {
         return;
       }
 
-      await axios.post("http://localhost:5000/order", {
+      await axios.post("http://localhost:5000/orders/order", {
         userId: user._id,
         username: user.username,
         email: user.email,

@@ -3,27 +3,27 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-
 require("dotenv").config();
 
 const PORT = process.env.PORT || 5000;
 
-const authRoutes = require("./middleware/auth");
-const itemRoutes = require("./routes/items"); 
+const authRoutes = require("./middleware/auth"); 
+const itemRoutes = require("./routes/items");
 const orderRoutes = require("./routes/orders");
 const User = require("./models/user");
 
 const app = express();
-app.get("/test", (req, res) => {
-  res.send("SERVER IS RUNNING CORRECT FILE");
-});
 
+// ===============================
+// MIDDLEWARE
+// ===============================
 app.use(cors({
   origin: ["http://localhost:5173", "http://localhost:3000"],
   credentials: true
 }));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); 
 app.use(cookieParser());
 
 app.use(session({
@@ -37,67 +37,32 @@ app.use(session({
   }
 }));
 
+// DATABASE
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.error(err));
 
+// ROUTES
 app.use("/", authRoutes);
 app.use("/", itemRoutes);
 app.use("/orders", orderRoutes);
 app.use("/uploads", express.static("uploads"));
 
+// ===============================
 app.get("/", (req, res) => {
   res.send("API is running");
 });
 
-// 👇 PUT IT HERE
+// TEST ROUTES
+app.get("/test", (req, res) => {
+  res.send("SERVER IS RUNNING CORRECT FILE");
+});
+
 app.get("/orders-test", (req, res) => {
   res.send("ORDERS ROUTE IS WORKING");
 });
 
-const dns = require("dns");
-
-app.get("/srv-test", (req, res) => {
-  dns.resolveSrv("_mongodb._tcp.cluster0.bcgnwkz.mongodb.net", (err, result) => {
-    if (err) return res.json({ error: err.message });
-    res.json(result);
-  });
-});
-
-app.get("/create-test-order", async (req, res) => {
-  const Order = require("./models/Order");
-
-  try {
-    const newOrder = new Order({
-      userId: "1",
-      username: "uytest",
-      email: "uytest@gmail.com",
-      items: [
-        {
-          name: "Burger",
-          quantity: 2,
-          price: 100
-        }
-      ],
-      total: 200
-    });
-
-    await newOrder.save();
-
-    res.send("Test order created!");
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-// ===============================
-// USERS ROUTES (FIX FOR ADMIN)
-// ===============================
-
-// GET ALL USERS
+// USERS (ADMIN)
 app.get("/users", async (req, res) => {
   try {
     const users = await User.find();
@@ -107,17 +72,49 @@ app.get("/users", async (req, res) => {
   }
 });
 
-// UPDATE USER
+const bcrypt = require("bcrypt"); 
+
 app.put("/users/:id", async (req, res) => {
   try {
-    const updated = await User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const { username, email, currentPassword, newPassword } = req.body;
 
-    res.json(updated);
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // CHECK CURRENT PASSWORD FIRST
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ error: "Current password is incorrect" });
+    }
+
+    // UPDATE DATA
+    user.username = username;
+    user.email = email;
+
+    // ONLY HASH IF NEW PASSWORD EXISTS
+    if (newPassword && newPassword.trim() !== "") {
+      user.password = await bcrypt.hash(newPassword, 10);
+    }
+
+    await user.save();
+
+    res.json({
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      admin: user.admin
+    });
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// ===============================
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

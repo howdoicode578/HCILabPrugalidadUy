@@ -13,33 +13,55 @@ const Home = () => {
       .catch(err => console.log(err));
   }, []);
 
+  // Limit featured items on the home page to the first 3 or 4 dishes
+  const featuredItems = items.slice(0, 4);
+
   return (
-    <div>
+    <>
       <Navbar />
-
-      <h1>MENU</h1>
-
-      <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-        {items.map(item => (
-          <div
-            key={item._id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "10px",
-              width: "200px"
-            }}
-          >
-            <img src={item.image} alt="" style={{ width: "100%" }} />
-            <h3>{item.name}</h3>
-            <p>₱{item.price}</p>
-
-            <Link to={`/item/${item._id}`}>
-              View Item
+      
+      <div className="home-page">
+        {/* --- Hero Section --- */}
+        <header className="hero-section">
+          <div className="hero-content">
+            <h1>Hot, Fresh & Delicious Food</h1>
+            <p>Satisy your cravings with our hand-crafted, mouth-watering local specials delivered straight to your table.</p>
+            <Link to="/menu" className="hero-btn">
+              Explore Our Menu
             </Link>
           </div>
-        ))}
+        </header>
+
+        {/* --- Featured Section --- */}
+        <section className="featured-section">
+          <div className="section-title">
+            <h2>Our Top Recommendations</h2>
+            <div className="header-underline"></div>
+          </div>
+
+          <div className="home-menu-grid">
+            {featuredItems.map(item => (
+              <div key={item._id} className="home-item-card">
+                <div className="home-card-image">
+                  <img 
+                    src={`http://localhost:5000/uploads/${item.image}`} 
+                    alt={item.name} 
+                  />
+                  <span className="home-card-price">₱{item.price}</span>
+                </div>
+                
+                <div className="home-card-details">
+                  <h3>{item.name}</h3>
+                  <Link to={`/item/${item._id}`} className="home-view-btn">
+                    View Details
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
-    </div>
+    </>
   );
 };
 
