@@ -17,6 +17,7 @@ import Orders from './pages/orders/orders'
 import AddItem from './pages/addItem/AddItem'
 import AdminDashboard from './pages/adminDashboard/AdminDashboard'
 import EditItems from './pages/editItems/EditItems'
+import Analytics from './pages/analytics/Analytics'
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
         <Route path='/admin' element={<AdminDashboard />} />
         <Route path="/edit-items" element={<EditItems />} />
         <Route path='/add-item' element={<AddItem />} />
+        <Route path='/analytics' element={<Analytics />} />
       </Routes>
     </div>
   )
